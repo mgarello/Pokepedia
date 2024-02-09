@@ -1,0 +1,85 @@
+:root {
+    --primary-color: #346CBB;
+    --primary-color-dark: #19488a;
+    --secondary-color: #FFCC03;
+}
+
+nav {
+    background-color: var(--primary-color);
+    z-index: 1;
+    flex-shrink: 0;
+    position: sticky!important;
+    top: 0;
+
+    transition-property: top;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
+}
+
+.nav-link a {
+    -webkit-text-stroke: 3px var(--secondary-color); /* width and color */
+    font-family: "Pokemon Solid";
+    font-size: 3em;
+    text-decoration: none;
+    color: var(--primary-color);
+    margin: 0.5em;
+}
+
+.hamBox {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.3s ease;
+    padding: 2.4em;
+    border: 0;
+    margin: 0;
+}
+
+.hamBox:hover {
+    background-color: var(--primary-color-dark);
+}
+
+.hamBoxOpen {
+    background-color: var(--primary-color-dark);
+}
+
+.lineTop, .lineBottom {
+    margin: 0 auto;
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 2px;
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+    left: 0;
+    right: 0;
+    transform: rotate(0deg);
+    transition: all 0.4s;
+}
+
+.lineTop {
+    top: 2.2em;
+}
+
+.lineBottom {
+    bottom: 2.2em;
+}
+
+.lineTop.spin {
+    top: 2.35em;
+    transform: rotate(135deg);
+    background-color: var(--secondary-color);
+}
+
+.lineBottom.spin {
+    bottom: 2.35em;
+    transform: rotate(225deg);
+    background-color: var(--secondary-color);
+}
+
+.show {
+    height: 100vh;
+}

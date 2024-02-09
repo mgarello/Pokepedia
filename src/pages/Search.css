@@ -1,0 +1,56 @@
+:root {
+    --primary-color: #346CBB;
+    --primary-color-dark: #19488a;
+    --secondary-color: #FFCC03;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main-content {
+    position: absolute;
+    top: 30%;
+    z-index: 0;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo img {
+    width: 70vw;
+}
+
+@media (min-width: 992px) {
+    .logo img {
+        width: 35vw;
+    }
+    
+}
+
+.input-group-text, .input-fields, .input-fields:focus {
+    background-color: transparent;
+    border: none;
+}
+
+.search-bar {
+    margin-top: 20px;
+    background-color: #D9D9D9;
+    color: #535353;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25em;
+    padding-left: 2em;
+    padding-right: 2em;
+    border-radius: 24px;
+}
+
+.bi-search {
+    cursor: pointer;
+}

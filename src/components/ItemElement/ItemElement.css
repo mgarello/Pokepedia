@@ -1,0 +1,4 @@
+.item-img {
+    height: calc(10vh + 15vw);
+    width: calc(10vh + 15vw);
+}

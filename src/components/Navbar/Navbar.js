@@ -51,16 +51,16 @@ const Navbar = () => {
                         <Link to="/Pokemon">Pokémon</Link>
                     </li>
                     <li className="nav-link">
-                        <Link to="/Abilities">Abilities</Link>
+                        <Link to="/Abilities">Abilità</Link>
                     </li>
                     <li className="nav-link">
-                        <Link to="/Moves">Moves</Link>
+                        <Link to="/Moves">Mosse</Link>
                     </li>
                     <li className="nav-link">
-                        <Link to="/Items">Items</Link>
+                        <Link to="/Items">Oggetti</Link>
                     </li>
                     <li className="nav-link">
-                        <Link to="/Berries">Berries</Link>
+                        <Link to="/Berries">Bacche</Link>
                     </li>
                 </ul>
             </div>

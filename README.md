@@ -1,20 +1,29 @@
-# Poképedia: my personal Pokémon Encyclopedia
+# Poképedia: la mia enciclopedia Pokémon personale!
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Bibliography
+## Dipendenze aggiuntive
 
-### Information Source
-All the informations included in this guide are provided by [PokéAPI](https://pokeapi.co/)
+### React use-dynamic-refs
+Per aggiungere dei riferimenti dinamici è stata utilizzata la libreria [use-dynamic-refs](https://www.npmjs.com/package/use-dynamic-refs).
+Per includerla all'interno del progetto è sufficiente utilizzare il codice `npm install --save use-dynamic-refs`.
+
+## Bibliografia
+
+### Fonte delle informazioni
+Tutte le informazioni presenti in questa guida sono ricavate da [PokéAPI](https://pokeapi.co/).
 
 ### Pokémon Font
-The font used in this project has been downloaded from [FontMeme](https://fontmeme.com/fonts/pokemon-font/)
+Il font utilizzato in questo progetto è stato scaricato da [FontMeme](https://fontmeme.com/fonts/pokemon-font/).
 
-### Types Icons
-The types icons used in this project are from [duiker101's repository](https://github.com/duiker101/pokemon-type-svg-icons)
+### Icone dei tipi
+Le icone dei tipi sono state realizzate da [duiker101 on GitHub](https://github.com/duiker101/pokemon-type-svg-icons).
 
 ### Navbar
-The navbar has been modified, but the original code was from [Bootstrap](https://getbootstrap.com/docs/4.0/examples/navbars/)
+Il template iniziale della navbar è stato realizzato da [Bootstrap](https://getbootstrap.com/docs/4.0/examples/navbars/).
 
-### Hamburger Icon
-The hamburger icon and its animation have been taken from [this tutorial](https://youtu.be/XLHdF7z77YU?si=Ecis-LxWlXBGOV42)
+### Icona dell'Hamburger
+L'icona dell'hamburger della navbar è stata realizzata seguendo [questo tutorial](https://youtu.be/XLHdF7z77YU?si=Ecis-LxWlXBGOV42).
+
+### Fetch nei singoli componenti
+Per ottenere le informazioni all'interno dei singoli componenti è stato utilizzato il codice fornito in [questo articolo](https://dev.to/johnpaulada/synchronous-fetch-with-asyncawait).

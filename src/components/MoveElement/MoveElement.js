@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from "react";
+import useDynamicRefs from "use-dynamic-refs";
 import "./MoveElement.css";
 
 const MoveElement = (props) => {
+    const [getRef, setRef] =  useDynamicRefs();
     const wrapper = useRef();
     const URL = props.image;
     let b = URL.split('/'); // salvo gli split dell'url per recuperare il numero della mossa corrente
@@ -10,7 +12,24 @@ const MoveElement = (props) => {
     const iconUrl = "https://raw.githubusercontent.com/duiker101/pokemon-type-svg-icons/master/icons/"; // icone dei tipi
     let name = props.name.toLowerCase();
     name = name[0].toUpperCase() + name.slice(1);
-    let types = []; // salvo i tipi della mossa
+
+    const request = async () => {
+        const response = await fetch(URL);
+        const json = await response.json();
+
+        json.names.forEach((e) => {
+            // console.log(e.language.name);
+            if (e.language.name === "it") {
+                name = e.name;
+                console.log(name);
+                getRef(num).current.innerHTML = name;
+            }
+        });
+    }
+
+    useEffect(()=> {
+        request();
+    }, []);
 
     // faccio la fetch solo una volta
     useEffect(()=> {
@@ -49,10 +68,10 @@ const MoveElement = (props) => {
 
     return (
         // ritorno il pokemon
-        <div className="col-12 col-lg-4 col-xl-3 list-element p-4 pkmn-container" key={num}>
+        <div className="col-12 col-md-6 col-lg-4 col-xl-3 list-element p-4 move-container" key={num}>
             <div>
                 <div className="text-center">
-                    Name: <b>{name}</b>
+                    <b ref={setRef(num)}>{name}</b>
                 </div>
             </div>
             <div ref={wrapper} className="mt-3">

@@ -12,6 +12,10 @@ const PokemonElement = (props) => {
     let name = props.name.toLowerCase();
     name = name[0].toUpperCase() + name.slice(1);
     let types = []; // salvo i tipi del pkmn
+    // aggiungo gli zeri davanti al numero
+    while (num.length<4) {
+        num = "0" + num;
+    }
 
     // faccio la fetch solo una volta
     useEffect(()=> {
@@ -80,10 +84,12 @@ const PokemonElement = (props) => {
         <div className="col-12 col-lg-4 col-xl-3 list-element p-4 pkmn-container" key={num}>
             <div>
                 <div className="text-center">
-                    Name: <b>{name}</b>
+                    <b>{name}</b>
+                    <br />
+                    <i>#{num}</i>
                 </div>
                 <div className="text-center mt-3 mb-3">
-                    <img src={imagePath} className="pkmn-img" />
+                    <img src={imagePath} alt={name} className="pkmn-img" />
                 </div>
             </div>
             <div ref={wrapper}>

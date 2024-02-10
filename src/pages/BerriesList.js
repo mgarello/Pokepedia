@@ -46,7 +46,7 @@ const ItemsList = () => {
             })
     }
 
-    const bohnonloso = () => {
+    const mostra = () => {
         prova();
         return ris.map((e) => {
             return <BerryElement name={e.name} url={e.url} />
@@ -58,7 +58,7 @@ const ItemsList = () => {
             <Navbar />
             <div className="container mt-3">
                 <div className="row justify-content-center align-items-center g-2">
-                    {bohnonloso()}
+                    {mostra()}
                 </div>
                 <button id="backToTopBtn" title="Torna su" onClick={topFunction} ref={backToTopBtn}>
                     <i className="bi bi-arrow-up"></i>

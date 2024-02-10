@@ -2,16 +2,11 @@
     * TYPES ICONS
 */
 
-.pkmn-container {
+.move-container {
     background-color: #dddddd;
     margin: 15px;
     border-radius: 25px;
     border: 10px;
-}
-
-.pkmn-img {
-    height: calc(10vh + 15vw);
-    width: calc(10vh + 15vw);
 }
 
 .icon {

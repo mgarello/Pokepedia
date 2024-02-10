@@ -37,7 +37,7 @@ const ItemsList = () => {
         document.documentElement.scrollTop = 0; // per Chrome, Firefox, IE, Opera
     }
 
-    const prova = () => {
+    const scarica = () => {
         // TODO limito la fetch, la faccio solo una volta e ogni volta che raggiungo il fondo aggiungo di 99
         fetch("https://pokeapi.co/api/v2/ability?limit=99")
             .then(dati => dati.json())
@@ -46,8 +46,8 @@ const ItemsList = () => {
             })
     }
 
-    const bohnonloso = () => {
-        prova();
+    const mostra = () => {
+        scarica();
         return ris.map((e) => {
             return <AbilityElement name={e.name} url={e.url} />
         });
@@ -58,7 +58,7 @@ const ItemsList = () => {
             <Navbar />
             <div className="container mt-3">
                 <div className="row justify-content-center align-items-center g-2">
-                    {bohnonloso()}
+                    {mostra()}
                 </div>
                 <button id="backToTopBtn" title="Torna su" onClick={topFunction} ref={backToTopBtn}>
                     <i className="bi bi-arrow-up"></i>

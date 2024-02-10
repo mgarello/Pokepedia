@@ -10,6 +10,7 @@ nav {
     flex-shrink: 0;
     position: sticky!important;
     top: 0;
+    padding-bottom: 20px!important;
 
     transition-property: top;
     transition-duration: 0.3s;

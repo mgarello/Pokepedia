@@ -1,0 +1,117 @@
+html, body {
+    max-width: 100%;
+    /* blocco lo scorrimento orizzontale */
+    overflow-x: hidden;
+}
+
+.pkmn-row-container {
+    flex-direction: row-reverse;
+}
+
+#pkmn-id {
+    /* serve per mostrare il numero dietro al nome */
+    position: sticky;
+}
+
+#pkmn-number {
+    opacity: 0.5;
+    font-size: calc(7vh + 5vw);
+    position: relative;
+    z-index: -1;
+    left: -2em;
+    bottom: calc(2rem - 1vh);
+}
+
+#pkmn-name {
+    font-size: calc(5vh + 5vw);
+}
+
+.pkmn-detail-img {
+    width: calc(45vh + 10vw);
+    height: calc(45vh + 10vw);
+    margin: 0px auto;
+}
+
+.pkmn-detail-img img {
+    width: 90%;
+    transition: 200ms all;
+}
+
+/* dagli schermi larghi */
+@media (min-width: 992px) {
+    .remove-top {
+        position: relative;
+        top: -30vh;
+    }
+    .alzati {
+        /* position: relative; */
+        top: -40vh;
+    }
+    #second-content {
+        position: relative;
+        left: calc(-8vw + 80px);
+    }
+    .vertical-line {
+        border-left: var(--bs-border-width) var(--bs-border-style) var(--thirdy-pkmn-color)!important;
+    }
+}
+
+.evolution-chain-img {
+    /* height: calc(12vw + 7vh + 30px); */
+    width: calc(12vw + 7vh + 30px);
+    transition: 200ms all;
+}
+
+.evolution-chain-img:hover, .pkmn-detail-img img:hover {
+    transform: scale(1.15);
+    cursor: pointer;
+}
+
+.evolution-chain-img img {
+    height: 80%;
+    width: 80%;
+    margin: 10%;
+}
+
+
+#chart-container {
+    position: relative;
+    margin: 10%;
+    height: 100%;
+    width: 80%;
+}
+
+.info-title {
+    font-size: medium;
+    font-weight: bold;
+    text-decoration: overline;
+    color: var(--secondary-pkmn-color);
+}
+
+.info-content {
+    color: var(--primary-pkmn-color);
+}
+
+/*
+    TYPES ICONS
+*/
+
+.icon-big {
+    border-radius: 100%;
+    height: calc(3vw + 10vh);
+    width: calc(3vw + 10vh);
+    /* margin: auto; */
+    transition: 200ms all;
+}
+
+.icon-big:hover {
+    filter: saturate(200%);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.icon-big img {
+    height: 60%;
+    width: 60%;
+    margin: 20%;
+}

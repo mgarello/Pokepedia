@@ -32,7 +32,7 @@ const Navbar = () => {
     }, []); // Empty dependency array means this effect runs once after initial render
 
     return (
-        <nav className="navbar navbar-expand-lg" ref={headerElement}>
+        <nav className="navbar navbar-expand-xl" ref={headerElement}>
             <button onClick={() => setNavOpen(!navOpen)} className="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
                 <div className={navOpen ? "hamBox hamBoxOpen" : "hamBox"}>
                     <span className={navOpen ? "lineTop spin" : "lineTop"}></span>

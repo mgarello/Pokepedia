@@ -5,6 +5,8 @@ import "./MoveElement.css";
 const MoveElement = (props) => {
     const [getRef, setRef] =  useDynamicRefs();
     const wrapper = useRef();
+    const containerDef = useRef();
+
     const URL = props.image;
     let b = URL.split('/'); // salvo gli split dell'url per recuperare il numero della mossa corrente
     let num = b[b.length-2];
@@ -23,6 +25,14 @@ const MoveElement = (props) => {
                 name = e.name;
                 console.log(name);
                 getRef(num).current.innerHTML = name;
+            }
+        });
+
+        json.flavor_text_entries.forEach((e)=> {
+            if (e.language.name === "it" && containerDef.current.childElementCount === 0) {
+                let text = document.createElement("p");
+                text.innerHTML = e.flavor_text;
+                containerDef.current.appendChild(text);
             }
         });
     }
@@ -68,7 +78,7 @@ const MoveElement = (props) => {
 
     return (
         // ritorno il pokemon
-        <div className="col-12 col-md-6 col-lg-4 col-xl-3 list-element p-4 move-container" key={num}>
+        <div className="col-12 col-md-6 col-lg-4 col-xl-3 list-element p-4 move-container" style={{minHeight: "calc(30vw - 30vh)"}} key={num}>
             <div>
                 <div className="text-center">
                     <b ref={setRef(num)}>{name}</b>
@@ -77,6 +87,7 @@ const MoveElement = (props) => {
             <div ref={wrapper} className="mt-3">
                 {/* inserisco i tipi */}
             </div>
+            <div className="mt-4" ref={containerDef}></div>
         </div>
     )
 }

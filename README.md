@@ -28,6 +28,9 @@ Tutte le informazioni presenti in questa guida sono ricavate da [PokéAPI](https
 ### Pokémon Font
 Il font utilizzato in questo progetto è stato scaricato da [FontMeme](https://fontmeme.com/fonts/pokemon-font/).
 
+### Favicon
+La favicon del progetto è stata scaricata da [questo sito](https://www.pngall.com/it/pokeball-png/download/40234).
+
 ### Icone dei tipi
 Le icone dei tipi sono state realizzate da [duiker101 on GitHub](https://github.com/duiker101/pokemon-type-svg-icons).
 

@@ -92,10 +92,6 @@ html, body {
     color: var(--primary-pkmn-color);
 }
 
-/*
-    TYPES ICONS
-*/
-
 .icon-big {
     border-radius: 100%;
     height: calc(3vw + 10vh);

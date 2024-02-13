@@ -1,7 +1,8 @@
-import React from "react"
-import "./Search.css"
-import Navbar from "../components/Navbar/Navbar"
-import pokepediaLogo from "../images/logo.png"
+import React from "react";
+import "./Search.css";
+import "../css/icons.css";
+import Navbar from "../components/Navbar/Navbar";
+import pokepediaLogo from "../images/logo.png";
 
 const Search = () => {
     return (

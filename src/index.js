@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {HashRouter, Routes, Route} from "react-router-dom";
 import './index.css';
 import Search from './pages/Search';
 // navbar pages
@@ -15,7 +15,7 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
+  <HashRouter>
     <Routes>
       {/* navbar */}
       <Route path="/" element={<Search />} />
@@ -27,7 +27,7 @@ root.render(
       {/* dettagli */}
       <Route path="/Pokemon/:name" element={<PokemonDetail />} />
     </Routes>
-  </BrowserRouter>
+  </HashRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

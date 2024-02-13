@@ -216,6 +216,11 @@ const PokemonDetail = () => {
         }
 
         // ottengo statistiche in 'StatsChart.js'
+
+        
+        // cambio il titolo della pagina
+        let prevTitle = document.title;
+        document.title = name + " - " + prevTitle;
     }
 
     // URL per chiamata all'API

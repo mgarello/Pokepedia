@@ -8,7 +8,6 @@ const ItemsList = () => {
     // valori di offset e limite per la chiamata all'API - uso stati così si aggiorna il componente
     const limite = 99;
     const [offset, setOffset] = useState(0);
-    let maxItems = 0;
     const [isFull, setIsFull] = useState(false);
     const [items, setItems] = useState([]);
 
@@ -18,8 +17,6 @@ const ItemsList = () => {
             .then(dati => dati.json())
             .then((elenco) => {
                 setItems([...items, ...elenco.results]);
-                // aggiorno il numero massimo di elementi
-                maxItems = elenco.count;
                 // se ho mostrato tutti gli elementi nascondo il pulsante per avanzare
                 if (elenco.next === null) {
                     setIsFull(true);

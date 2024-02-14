@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import AbilityElement from "../components/AbilityElement/AbilityElement";
 import BackToTopButton from "../components/BackToTopButton/BackToTopButton";
@@ -8,7 +8,6 @@ const AbilitiesList = () => {
     // valori di offset e limite per la chiamata all'API - uso stati così si aggiorna il componente
     const limite = 99;
     const [offset, setOffset] = useState(0);
-    let maxItems = 0;
     const [isFull, setIsFull] = useState(false);
     const [abilities, setAbilities] = useState([]);
 
@@ -18,8 +17,6 @@ const AbilitiesList = () => {
             .then(dati => dati.json())
             .then((elenco) => {
                 setAbilities([...abilities, ...elenco.results]);
-                // aggiorno il numero massimo di elementi
-                maxItems = elenco.count;
                 // se ho mostrato tutti gli elementi nascondo il pulsante per avanzare
                 if (elenco.next === null) {
                     setIsFull(true);

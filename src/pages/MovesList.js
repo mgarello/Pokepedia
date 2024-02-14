@@ -9,7 +9,6 @@ const MovesList = () => {
     // valori di offset e limite per la chiamata all'API - uso stati così si aggiorna il componente
     const limite = 99;
     const [offset, setOffset] = useState(0);
-    let maxMoves = 0;
     const [isFull, setIsFull] = useState(false);
     const [moves, setMoves] = useState([]);
 
@@ -19,8 +18,6 @@ const MovesList = () => {
             .then(dati => dati.json())
             .then((elenco) => {
                 setMoves([...moves, ...elenco.results]);
-                // aggiorno il numero massimo di elementi
-                maxMoves = elenco.count;
                 // se ho mostrato tutti gli elementi nascondo il pulsante per avanzare
                 if (elenco.next === null) {
                     setIsFull(true);

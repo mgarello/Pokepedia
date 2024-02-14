@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./PokemonDetail.css";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader";
 
 import getColors from "../../helpers/getColors";
@@ -40,6 +40,8 @@ const PokemonDetail = () => {
     const pkmnRes05 = useRef(); // resistenze x0.5
 
     const [evChain, setEvChain] = useState({});
+
+    const navigate = useNavigate();
 
     
     // verso del pokemon, viene riprodotto quando l'immagine grande viene cliccata
@@ -99,7 +101,10 @@ const PokemonDetail = () => {
         const request = async (name) => {
             setIsLoading(true);
             // scarico
-            const response = await fetch(APIURL + name)
+            const response = await fetch(APIURL + name);
+            if (response.status === 404) {
+                navigate("/Pokemon");
+            }
             // converto
             const json = await response.json();
             sessionStorage.setItem("json", JSON.stringify(json));
@@ -157,7 +162,11 @@ const PokemonDetail = () => {
             });
             
             // imposto il nome
+            if (parseInt(name) != NaN) {
+                name = json.name;
+            }
             name = name[0].toUpperCase() + name.slice(1).toLowerCase(); // capitalize
+            name = name.replace('-', ' ');
             pkmnName.current.innerText = name;
 
             // imposto il numero
@@ -207,7 +216,7 @@ const PokemonDetail = () => {
         // scarico linea evolutivo
         const loadEvChain = async (url) => {
             let stages = {};
-            // resetto lo stato, altrimenti, se passo lo stessi oggetto, non mi ricarica il componente
+            // resetto lo stato, altrimenti, se passo lo stesso oggetto, non mi ricarica il componente
             setEvChain({});
             // scarico informazioni del pokémon
             const response = await fetch(url);
@@ -231,6 +240,20 @@ const PokemonDetail = () => {
                     evDet.push(item);
                 }
             });
+            // ottengo informazioni relative alle forme alternative
+            fetch(e.species.url)
+            .then(dati => dati.json())
+            .then((json)=> {
+                json.varieties.forEach((pkmn)=> {
+                    if (!pkmn.is_default) {
+                        let l = pkmn.pokemon.url.split('/');
+                        elenco[l[l.length - 2.]] = {
+                            name: pkmn.pokemon.name
+                        };
+                    }
+                });
+                setEvChain(elenco)
+            })
             // salvo le informazioni del Pokémon
             elenco[b[b.length - 2]] = {
                 name: e.species.name,
@@ -248,6 +271,7 @@ const PokemonDetail = () => {
 
         // carico le immagini della catena evolutiva
         let pkmnEvChainUrl = URLEVCHAIN + name;
+        setEvChain({});
         loadEvChain(pkmnEvChainUrl);
 
         // ottengo i dati del Pokémon
@@ -256,7 +280,7 @@ const PokemonDetail = () => {
 
     return (
         <div className="container-fluid bgColor p-3">
-            {isLoading ? <Loader /> : console.log()}
+            {isLoading ? <Loader /> : null}
             <div className="row justify-content-center align-items-center flex-row-reverse">
                 {/* nome e numero del pkmn */}
                 <div className="col-12 col-lg-6 mt-3 remove-top">
@@ -322,20 +346,19 @@ const PokemonDetail = () => {
                                 <div className="col-12">
                                     <hr className="d-lg-none mt-5" />
                                     <p className="mt-5 text-center info-title">Linea evolutiva</p>
-                                    <div className="d-flex justify-content-around" ref={pkmnEvChain} id="pkmnChain">
+                                    <div className="d-flex justify-content-around" ref={pkmnEvChain}>
                                         {/* creo la catena evolutiva */}
-                                        {Object.keys(evChain).sort().map((num, index)=> {
+                                        {Object.keys(evChain).sort().map((num)=> {
                                             let currentName = evChain[num].name.trim();
                                             currentName = currentName[0].toUpperCase() + currentName.slice(1);
                                             let path = "/Pokemon/" + currentName;
-                                            console.log(evChain)
                                             return (
-                                                // ? se clicco sul Pokémon cambia la schermata ma non viene mostrata la catena evolutiva
-                                                <Link to={path}>
-                                                    <div className="evolution-chain-img">
+                                                // ? le forme alternative vengono mostrate solo se clicco sul Pokémon corrente nella linea delle evoluzioni - possibile soluzione: passo lo stesso oggetto e il componente non si riaggiorna fino a quando non lo faccio manualmente (come era successo x link da stadi evolutivi che non venivano mostrati)
+                                                <div className="evolution-chain-img">
+                                                    <Link to={path} key={currentName}>
                                                         <img src={IMAGEURL + num + IMAGEEXT} alt={currentName} title={currentName} />
-                                                    </div>
-                                                </Link>
+                                                    </Link>
+                                                </div>
                                             )
                                         })}
                                     </div>
@@ -377,7 +400,7 @@ const PokemonDetail = () => {
                             <hr className="d-lg-none mt-5" />
                             <span className="mt-4 info-title">Statistiche base</span>
                             <div className="mt-4" ref={pkmnStats} id="chart-container">
-                                {(!isLoading) ? <StatsChart pkmnname={name} primaryColor="var(--primary-pkmn-color)" /> : console.log()}
+                                {(!isLoading) ? <StatsChart pkmnname={name} primaryColor="var(--primary-pkmn-color)" /> : null}
                             </div>
                         </div>
                     </div>

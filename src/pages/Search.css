@@ -4,6 +4,11 @@
     --secondary-color: #FFCC03;
 }
 
+/* nascondo gli errori fullscreen */
+iframe {
+    display: none;
+}
+
 * {
     margin: 0;
     padding: 0;

@@ -1,0 +1,19 @@
+/* Paste this css to your style sheet file or under head tag */
+/* This only works with JavaScript, 
+if it's not present, don't show loader */
+.no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+    /* Pokéball */
+    background: url(https://media.tenor.com/7lb4IdfIBFUAAAAi/pokemon.gif) center no-repeat #fff;
+	/* background: url(https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/828fc30f-5f33-4a00-870b-0615d5f3e61b/d3173rr-4f2218a6-d3e5-463a-ae53-9c0f32e7629a.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzgyOGZjMzBmLTVmMzMtNGEwMC04NzBiLTA2MTVkNWYzZTYxYlwvZDMxNzNyci00ZjIyMThhNi1kM2U1LTQ2M2EtYWU1My05YzBmMzJlNzYyOWEuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.XCz8F83pHd-nUHa4EWjOCZbYaiH8bkq2ycZef6CBE_g) center no-repeat #fff; */
+    /* Pikachu */
+	/* background: url(https://media.tenor.com/uUNcnHwYJQEAAAAi/running-pikachu-transparent-snivee.gif) center no-repeat #fff; */
+    background-size: calc(2vw + 20px);
+}

@@ -1,7 +1,7 @@
 @font-face {
-    font-family: 'pokemon_solidnormal';
-    src: url('pokemon_solid-webfont.woff2') format('woff2'),
-        url('pokemon_solid-webfont.woff') format('woff');
-    font-weight: normal;
+    font-family: 'Pokemon_Solid';
     font-style: normal;
+    font-weight: 400;
+    src: local('Pokemon_Solid'),
+        url(./Pokemon_Solid.ttf) format('ttf');
 }

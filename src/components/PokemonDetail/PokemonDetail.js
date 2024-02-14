@@ -1,12 +1,16 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import "./PokemonDetail.css";
 import { useParams } from "react-router-dom";
+import Loader from "../Loader/Loader";
 
 import getColors from "../../helpers/getColors";
 import getMultipliers from "../../helpers/getMultipliers";
 import StatsChart from "../StatsChart/StatsChart";
 
 const PokemonDetail = () => {
+    // loader
+    const [isLoading, setIsLoading] = useState(true);
+
     // verso del pokemon, viene riprodotto quando l'immagine grande viene cliccata
     // ! non funziona in Safari, problema del browser che non riesce a riprodurre file audio dato un URL
     let pkmncry = new Audio();
@@ -41,7 +45,7 @@ const PokemonDetail = () => {
         let keys = Object.keys(obj);
         keys.forEach((e) => {
             // tolgo gli effetti normali
-            if (obj[e] != 1) {
+            if (obj[e] !== 1) {
                 // creo icona del tipo
                 let div = document.createElement("div");
                 let img = document.createElement("img");
@@ -102,7 +106,7 @@ const PokemonDetail = () => {
            evolution_details: evDet
         };
         // se non è l'ultimo elemento nella lista continuo
-        if (e.evolves_to.length != 0) {
+        if (e.evolves_to.length !== 0) {
             // per ognuna delle sue evoluzioni
             e.evolves_to.forEach((i)=> {
                 getEvChain(elenco, i);
@@ -160,7 +164,7 @@ const PokemonDetail = () => {
         // controllo che non ci siano vuoti, se ci sono li nascondo
         Object.values(effectContainers).forEach((e) => {
             // se l'unico elemento presente è il moltiplicatore
-            if (e.current.childElementCount == 1) {
+            if (e.current.childElementCount === 1) {
                 e.current.classList.remove("d-flex");
                 e.current.classList.add("d-none");
             }
@@ -221,6 +225,8 @@ const PokemonDetail = () => {
         // cambio il titolo della pagina
         let prevTitle = document.title;
         document.title = name + " - " + prevTitle;
+
+        setIsLoading(false);
     }
 
     // URL per chiamata all'API
@@ -258,6 +264,7 @@ const PokemonDetail = () => {
 
     return (
         <div className="container-fluid bgColor p-3">
+            {isLoading ? <Loader /> : console.log(name)}
             <div className="row justify-content-center align-items-center flex-row-reverse">
                 {/* nome e numero del pkmn */}
                 <div className="col-12 col-lg-6 mt-3 remove-top">
@@ -285,11 +292,11 @@ const PokemonDetail = () => {
                                     <hr className="d-lg-none mt-5" />
                                     <p className="mt-5 text-center info-title">Debolezze</p>
                                 </div>
-                                <div className="col-12 d-flex justify-content-around" ref={pkmnWeak2}>
-                                    {/* x2 */}
-                                </div>
                                 <div className="col-12 d-flex justify-content-around" ref={pkmnWeak4}>
                                     {/* x4 */}
+                                </div>
+                                <div className="col-12 d-flex justify-content-around" ref={pkmnWeak2}>
+                                    {/* x2 */}
                                 </div>
                                 {/* effetto normale */}
                                 {/* <div className="col-12">

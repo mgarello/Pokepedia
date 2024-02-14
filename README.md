@@ -20,6 +20,10 @@ Per importarlo all'interno del progetto è sufficiente utilizzare il comando `np
 Per la realizzazione del grafico delle statistiche base è stata utilizzata la libreria [react-chartjs-2](https://react-chartjs-2.js.org/).
 Per includerla all'interno del progetto è sufficiente utilizzare il comando `npm install --save chart.js react-chartjs-2`.
 
+### react-gh-pages
+Per rendere accessibile il sito attraverso un URL è stato utilizzato il pacchetto [gh-pages](https://github.com/gitname/react-gh-pages?tab=readme-ov-file).
+È possibile accedere al sito tramite [questo URL](https://mgarello.github.io/Pokepedia).
+
 ## Bibliografia
 
 ### Fonte delle informazioni

@@ -61,3 +61,6 @@ Per realizzare il grafico delle statistiche base ricavando i dati direttamente d
 
 ### Accesso alle variabili CSS da Javascript
 Per accedere alle variabili CSS all'interno del componente del grafico è stato utilizzato parzialmente [questo codice](https://codepen.io/kurkle/pen/KKpaYwx).
+
+### GIF del preloader
+La GIF utilizzata per il preloader è stata scaricata da [Tenor](https://tenor.com/en-GB/view/pokemon-gif-21691408).

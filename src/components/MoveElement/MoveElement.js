@@ -23,7 +23,7 @@ const MoveElement = (props) => {
             // console.log(e.language.name);
             if (e.language.name === "it") {
                 name = e.name;
-                console.log(name);
+                // console.log(name);
                 getRef(num).current.innerHTML = name;
             }
         });

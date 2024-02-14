@@ -1,56 +1,37 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar/Navbar";
-import "./BerriesList.css";
 import BerryElement from "../components/BerryElement/BerryElement";
+import BackToTopButton from "../components/BackToTopButton/BackToTopButton";
+import ShowMoreButton from "../components/ShowMoreButton/ShowMoreButton";
 
 const ItemsList = () => {
-    const [ris, setRis] = useState([]);
+    // valori di offset e limite per la chiamata all'API - uso stati così si aggiorna il componente
+    const limite = 33;
+    const [offset, setOffset] = useState(0);
+    let maxItems = 0;
+    const [isFull, setIsFull] = useState(false);
+    const [berries, setBerries] = useState([]);
 
-    // back to top button
-    const backToTopBtn = useRef();
-
-    useEffect(() => {
-        const scrollFunction = () => {
-            const btnStyle = backToTopBtn.current && backToTopBtn.current.style;
-
-            if (btnStyle) {
-                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                    btnStyle.display = "flex";
-                } else {
-                    btnStyle.display = "none";
-                }
-            }
-        };
-
-        // Add the scroll event listener
-        window.addEventListener('scroll', scrollFunction);
-
-        // Clean up the event listener when the component unmounts
-        return () => {
-            window.removeEventListener('scroll', scrollFunction);
-        };
-    }, []); // Empty dependency array means this effect runs once after initial render
-
-    // When the user clicks on the button, scroll to the top of the document
-    const topFunction = () => {
-        document.body.scrollTop = 0; // per Safari
-        document.documentElement.scrollTop = 0; // per Chrome, Firefox, IE, Opera
-    }
-
-    const prova = () => {
-        // TODO limito la fetch, la faccio solo una volta e ogni volta che raggiungo il fondo aggiungo di 99
-        fetch("https://pokeapi.co/api/v2/berry?limit=33")
+    useEffect(()=> {
+        const scarica = () => {
+            fetch("https://pokeapi.co/api/v2/berry?limit=" + limite + "&offset=" + offset)
             .then(dati => dati.json())
-            .then((boh) => {
-                setRis([...boh.results])
-            })
-    }
+            .then((elenco) => {
+                setBerries([...berries, ...elenco.results]);
+                // aggiorno il numero massimo di elementi
+                maxItems = elenco.count;
+                // se ho mostrato tutti gli elementi nascondo il pulsante per avanzare
+                if (elenco.next === null) {
+                    setIsFull(true);
+                }
+            });
+        }
+        scarica();
+    }, [offset]);
 
-    const mostra = () => {
-        prova();
-        return ris.map((e) => {
-            return <BerryElement name={e.name} url={e.url} />
-        });
+    const clickHandler=()=> {
+        // aumento l'offset
+        setOffset(offset + limite);
     }
 
     return (
@@ -58,11 +39,12 @@ const ItemsList = () => {
             <Navbar />
             <div className="container mt-3">
                 <div className="row justify-content-center align-items-center g-2">
-                    {mostra()}
+                    {berries.map(({name, url})=> {
+                        return <BerryElement name={name} url={url} />
+                    })}
                 </div>
-                <button id="backToTopBtn" title="Torna su" onClick={topFunction} ref={backToTopBtn}>
-                    <i className="bi bi-arrow-up"></i>
-                </button>
+                {(!isFull) ? <ShowMoreButton text="Carica altre bacche" functionName={clickHandler} /> : console.log()}
+                <BackToTopButton />
             </div>
         </>
     )

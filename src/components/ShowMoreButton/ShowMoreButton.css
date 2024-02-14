@@ -1,0 +1,19 @@
+.button-wrapper {
+    text-align: center;
+    margin: 20px;
+}
+
+.load-button {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 26px;
+    font-size: 18px;
+    border: 3px solid var(--primary-color-dark);
+    align-items: cente
+}
+
+.load-button:hover {
+    background-color: var(--primary-color-dark);
+}

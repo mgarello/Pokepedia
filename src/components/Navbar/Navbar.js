@@ -57,7 +57,7 @@ const Navbar = () => {
                         <Link to="/Moves">Mosse</Link>
                     </li>
                     <li className="nav-link">
-                        <Link to="/Items">Oggetti</Link>
+                        <Link to="/Items">Strumenti</Link>
                     </li>
                     <li className="nav-link">
                         <Link to="/Berries">Bacche</Link>

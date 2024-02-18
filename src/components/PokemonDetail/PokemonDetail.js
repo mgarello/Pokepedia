@@ -26,7 +26,6 @@ const PokemonDetail = () => {
     const pkmnName = useRef(); // nome
     const pkmnImg = useRef(); // immagine del pkmn
     const pkmnTypes = useRef(); // tipi del pkmn
-    const pkmnEvChain = useRef(); // linea evolutiva
     const pkmnHeight = useRef(); // altezza
     const pkmnWeight = useRef(); // peso
     const pkmnAbilities = useRef(); // elenco abilità
@@ -38,6 +37,8 @@ const PokemonDetail = () => {
     const pkmnRes0 = useRef(); // resistenze x0
     const pkmnRes025 = useRef(); // resistenze x0.25
     const pkmnRes05 = useRef(); // resistenze x0.5
+
+    const searchBar = useRef(); // barra di ricerca
 
     const [evChain, setEvChain] = useState({});
 
@@ -162,7 +163,7 @@ const PokemonDetail = () => {
             });
             
             // imposto il nome
-            if (parseInt(name) != NaN) {
+            if (!isNaN(parseInt(name))) {
                 name = json.name;
             }
             name = name[0].toUpperCase() + name.slice(1).toLowerCase(); // capitalize
@@ -207,8 +208,7 @@ const PokemonDetail = () => {
             // ottengo statistiche in 'StatsChart.js'
 
             // cambio il titolo della pagina
-            let prevTitle = document.title;
-            document.title = name + " - " + prevTitle;
+            document.title = name + " - Poképedia";
 
             setIsLoading(false);
         }
@@ -225,63 +225,117 @@ const PokemonDetail = () => {
             // scarico la catena evolutiva
             const evChainData = await fetch(json.evolution_chain.url);
             const ris = await evChainData.json();
-            getEvChain(stages, ris.chain);
+            getEvChain(stages, ris.chain, null);
             // aggiorno lo stato con la linea evolutiva
             setEvChain(stages);
+            console.log(stages)
         }
 
         // ottengo linea evolutiva
-        const getEvChain = (elenco, e) => {
+        const getEvChain = (elenco, e, prev) => {
             let b = e.species.url.split('/');
             // salvo le condizioni necessarie per evolversi in quel Pokémon
             let evDet = [];
             e.evolution_details.forEach((item) => {
                 if (item !== null) {
+                    // aggiungo manualmente lo stadio precedente
+                    item["evolves_from"] = prev.species.name;
                     evDet.push(item);
                 }
             });
-            // ottengo informazioni relative alle forme alternative
-            fetch(e.species.url)
-            .then(dati => dati.json())
-            .then((json)=> {
-                json.varieties.forEach((pkmn)=> {
-                    if (!pkmn.is_default) {
-                        let l = pkmn.pokemon.url.split('/');
-                        elenco[l[l.length - 2.]] = {
-                            name: pkmn.pokemon.name
-                        };
-                    }
-                });
-                setEvChain(elenco)
-            })
+            // ! PRIMA DI CONTINUARE DEVO ASPETTARE CHE FINISCA LA FETCH
+            // ottengo informazioni relative alle forme alternative in modo sincrono
+            const request = new XMLHttpRequest();
+            request.open("GET", e.species.url, false); // `false` makes the request synchronous
+            request.send(null);
+            let json = JSON.parse(request.response)
+            json.varieties.forEach((pkmn)=> {
+                if (!pkmn.is_default) {
+                    let l = pkmn.pokemon.url.split('/');
+                    // imposto un flag per ogni variante
+                    let megaPkmn = pkmn.pokemon.name.includes("mega");
+                    let gigaPkmn = pkmn.pokemon.name.includes("gmax");
+                    elenco[parseInt(l[l.length - 2.])] = {
+                        name: pkmn.pokemon.name,
+                        evolution_details: [],
+                        isBaby: false,
+                        isMega: megaPkmn,
+                        isGiga: gigaPkmn,
+                    };
+                }
+            });
+            // imposto un flag per ogni variante
+            let megaPkmn = e.species.name.includes("mega");
+            let gigaPkmn = e.species.name.includes("gmax");
             // salvo le informazioni del Pokémon
-            elenco[b[b.length - 2]] = {
+            elenco[parseInt(b[b.length - 2])] = {
                 name: e.species.name,
                 evolution_details: evDet,
-                isBaby: e.is_baby
+                isBaby: e.is_baby,
+                isMega: megaPkmn,
+                isGiga: gigaPkmn,
             };
             // se non è l'ultimo elemento nella lista continuo
             if (e.evolves_to.length !== 0) {
                 // per ognuna delle sue evoluzioni
                 e.evolves_to.forEach((i) => {
-                    getEvChain(elenco, i);
+                    getEvChain(elenco, i, e);
                 });
             }
         }
 
         // carico le immagini della catena evolutiva
         let pkmnEvChainUrl = URLEVCHAIN + name;
-        setEvChain({});
         loadEvChain(pkmnEvChainUrl);
 
         // ottengo i dati del Pokémon
         request(name);
     }, [name]);
 
+    // cerco per il dato fornito nella barra di ricerca
+    const cercaPkmn = async ()=> {
+        // prendo il contenuto della casella di ricerca e lo "purifico"
+        let inser = searchBar.current.value.trim().toLowerCase().replace(" ", "-");
+        
+        await fetch(APIURL + inser)
+        .then((response)=> {
+            if (response.status >= 400 && response.status < 600) {
+                throw new Error("Non è stato trovato alcun Pokémon con i criteri inseriti.");
+            } else {
+                inser = inser[0].toUpperCase() + inser.slice(1);
+                // l'API mi restituisce qualcosa --> rimando alla pagina corrispondente
+                navigate("/Pokemon/" + inser);
+                // pulisco il contenuto della barra
+                searchBar.current.value = "";
+            }
+            return response;
+        }).catch((error) => {
+            // Your error is here!
+            console.log(error);
+            alert("hai un errore!");
+        });
+    }
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            cercaPkmn();
+        }
+    };
+
+    // ritorno il componente
     return (
         <div className="container-fluid bgColor p-3">
             {isLoading ? <Loader /> : null}
             <div className="row justify-content-center align-items-center flex-row-reverse">
+                {/* barra di ricerca */}
+                <div className="col-12 mb-5 d-flex justify-content-center">
+                    <form onKeyDown={handleKeyDown} id="search-pokemon-bar">
+                        <div className="search-bar text-center input-group">
+                            <input ref={searchBar} type="text" placeholder="Cerca Pokémon per nome o numero" className="form-control input-fields input-group-text-left fs-5" />
+                            <span className="input-group-text input-group-text-right" onClick={cercaPkmn}><i className="bi bi-search fs-4"></i></span>
+                        </div>
+                    </form>
+                </div>
                 {/* nome e numero del pkmn */}
                 <div className="col-12 col-lg-6 mt-3 remove-top">
                     <div id="pkmn-id">
@@ -346,14 +400,35 @@ const PokemonDetail = () => {
                                 <div className="col-12">
                                     <hr className="d-lg-none mt-5" />
                                     <p className="mt-5 text-center info-title">Linea evolutiva</p>
-                                    <div className="d-flex justify-content-around" ref={pkmnEvChain}>
+                                    <div className="d-flex justify-content-around">
                                         {/* creo la catena evolutiva */}
-                                        {Object.keys(evChain).sort().map((num)=> {
+                                        {Object.keys(evChain).sort((a, b)=> {
+                                            console.log("presi: ", a, b)
+                                            console.log(Object.keys(evChain))
+                                            // tratto le chiavi del dizionario (stringhe)
+
+                                            // se il pokémon è un baby lo metto per primo
+                                            if (evChain[a].isBaby) {
+                                                return -1;
+                                            } else if (evChain[b].isBaby) {
+                                                return 1;
+                                            }
+
+                                            // se il pokémon è mega o giga lo metto al fondo
+                                            if (evChain[a].isMega || evChain[a].isGiga || evChain[b].isMega || evChain[b].isGiga) {
+                                                console.log("GIGA O MEGA")
+                                                return 1;
+                                            }
+
+                                            // se non è nessuno di quelli uso l'ordine crescente
+                                            return parseInt(a) - parseInt(b);
+                                        }).map((num)=> {
+                                            // ottengo il nome del Pokémon
                                             let currentName = evChain[num].name.trim();
                                             currentName = currentName[0].toUpperCase() + currentName.slice(1);
+                                            // definisco il percorso per la pagina da aprire
                                             let path = "/Pokemon/" + currentName;
                                             return (
-                                                // ? le forme alternative vengono mostrate solo se clicco sul Pokémon corrente nella linea delle evoluzioni - possibile soluzione: passo lo stesso oggetto e il componente non si riaggiorna fino a quando non lo faccio manualmente (come era successo x link da stadi evolutivi che non venivano mostrati)
                                                 <div className="evolution-chain-img">
                                                     <Link to={path} key={currentName}>
                                                         <img src={IMAGEURL + num + IMAGEEXT} alt={currentName} title={currentName} />
@@ -400,7 +475,7 @@ const PokemonDetail = () => {
                             <hr className="d-lg-none mt-5" />
                             <span className="mt-4 info-title">Statistiche base</span>
                             <div className="mt-4" ref={pkmnStats} id="chart-container">
-                                {(!isLoading) ? <StatsChart pkmnname={name} primaryColor="var(--primary-pkmn-color)" /> : null}
+                                {(!isLoading) && <StatsChart pkmnname={name} primaryColor="var(--primary-pkmn-color)" />}
                             </div>
                         </div>
                     </div>

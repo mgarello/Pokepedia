@@ -8,6 +8,10 @@ html, body {
     flex-direction: row-reverse;
 }
 
+#search-pokemon-bar {
+    width: 100%;
+}
+
 #pkmn-id {
     /* serve per mostrare il numero dietro al nome */
     position: sticky;
@@ -53,6 +57,9 @@ html, body {
     }
     .vertical-line {
         border-left: var(--bs-border-width) var(--bs-border-style) var(--thirdy-pkmn-color)!important;
+    }
+    #search-pokemon-bar {
+        width: 75%;
     }
 }
 

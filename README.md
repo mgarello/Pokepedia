@@ -24,6 +24,10 @@ Per includerla all'interno del progetto è sufficiente utilizzare il comando `np
 Per rendere accessibile il sito attraverso un URL è stato utilizzato il pacchetto [gh-pages](https://github.com/gitname/react-gh-pages?tab=readme-ov-file).
 È possibile accedere al sito tramite [questo URL](https://mgarello.github.io/Pokepedia).
 
+### SweetAlert2
+Per realizzare gli alert del progetto è stata utilizzata la libreria [SweetAlert2](https://sweetalert2.github.io/).
+Per includerla all'interno del progetto è sufficiente utilizzare il comando `npm install sweetalert2`.
+
 ## Bibliografia
 
 ### Fonte delle informazioni

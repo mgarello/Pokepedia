@@ -6,6 +6,7 @@ import "../fonts/fonts.css";
 import Navbar from "../components/Navbar/Navbar";
 import Loader from "../components/Loader/Loader";
 import pokepediaLogo from "../images/logo.png";
+import Swal from "sweetalert2";
 
 const Search = () => {
     // loader
@@ -37,7 +38,11 @@ const Search = () => {
             }).catch((error) => {
                 setIsLoading(false);
                 console.log(error);
-                alert("hai un errore!");
+                Swal.fire({
+                    icon: "warning",
+                    title: "Attenzione!",
+                    text: "Impossibile caricare le informazioni del Pokémon cercato, controllare la correttezza del nome o del numero inserito e riprovare"
+                });
             });
     }
 

@@ -7,6 +7,7 @@ import Navbar from "../Navbar/Navbar";
 import getColors from "../../helpers/getColors";
 import getMultipliers from "../../helpers/getMultipliers";
 import StatsChart from "../StatsChart/StatsChart";
+import Swal from "sweetalert2";
 
 const PokemonDetail = () => {
     // loader
@@ -336,7 +337,11 @@ const PokemonDetail = () => {
         }).catch((error) => {
             setIsLoading(false);
             console.log(error);
-            alert("hai un errore!");
+            Swal.fire({
+                icon: "warning",
+                title: "Attenzione!",
+                text: "Impossibile caricare le informazioni del Pokémon cercato, controllare la correttezza del nome o del numero inserito e riprovare"
+            });
         });
     }
 

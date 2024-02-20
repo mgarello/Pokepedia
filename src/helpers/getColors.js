@@ -67,7 +67,7 @@ const getColors = (num) => {
         document.body.appendChild(css);
         document.head.querySelectorAll('meta[name=theme-color]')[0].content = bgColor;
     }
-    // ! cambio il percorso dell'immagine
+    // percorso dell'immagine
     image.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + num + ".png";
     image.crossOrigin = 'Anonymous';
 }

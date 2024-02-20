@@ -33,7 +33,7 @@ const StatsChart = (props) => {
             {
                 label: "Statistica base",
                 data: chart.map(y => y.base_stat),
-                backgroundColor: cssvar("--primary-pkmn-color")
+                backgroundColor: cssvar(props.barColor)
             },
         ],
     }

@@ -22,8 +22,8 @@ html, body {
     font-size: calc(7vh + 5vw);
     position: relative;
     z-index: -1;
-    left: -2em;
-    bottom: calc(2rem - 1vh);
+    left: calc(-1em + 1vh);
+    bottom: calc(2rem + 1vh);
 }
 
 #pkmn-name {

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./PokemonDetail.css";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader";
+import Navbar from "../Navbar/Navbar";
 
 import getColors from "../../helpers/getColors";
 import getMultipliers from "../../helpers/getMultipliers";
@@ -167,11 +168,29 @@ const PokemonDetail = () => {
                 name = json.name;
             }
             name = name[0].toUpperCase() + name.slice(1).toLowerCase(); // capitalize
-            name = name.replace('-', ' ');
+            name = name.replaceAll('-', ' ');
             pkmnName.current.innerText = name;
 
             // imposto il numero
-            pkmnNumber.current.innerText = num;
+            if (json.name.includes("-")) {
+                // tratto il nome
+                let nameList = json.name.split('-');
+                // ottengo l'id del Pokémon "iniziale"
+                const request = new XMLHttpRequest();
+                request.open("GET", APIURL + nameList[0], false); // `false` makes the request synchronous
+                request.send(null);
+                let jsonPrev = JSON.parse(request.response);
+                // tratto il numero
+                let numPrev = jsonPrev.id.toString(); // numero - strattato come stringa
+                // aggiungo gli zeri davanti al numero
+                while (numPrev.length < 4) {
+                    numPrev = "0" + numPrev;
+                }
+                numPrev = "#" + numPrev;
+                pkmnNumber.current.innerText = numPrev;
+            } else {
+                pkmnNumber.current.innerText = num;
+            }
 
             // carico l'immagine del pkmn
             let img = document.createElement("img");
@@ -228,7 +247,6 @@ const PokemonDetail = () => {
             getEvChain(stages, ris.chain, null);
             // aggiorno lo stato con la linea evolutiva
             setEvChain(stages);
-            console.log(stages)
         }
 
         // ottengo linea evolutiva
@@ -243,12 +261,11 @@ const PokemonDetail = () => {
                     evDet.push(item);
                 }
             });
-            // ! PRIMA DI CONTINUARE DEVO ASPETTARE CHE FINISCA LA FETCH
             // ottengo informazioni relative alle forme alternative in modo sincrono
             const request = new XMLHttpRequest();
             request.open("GET", e.species.url, false); // `false` makes the request synchronous
             request.send(null);
-            let json = JSON.parse(request.response)
+            let json = JSON.parse(request.response);
             json.varieties.forEach((pkmn)=> {
                 if (!pkmn.is_default) {
                     let l = pkmn.pokemon.url.split('/');
@@ -285,17 +302,24 @@ const PokemonDetail = () => {
         }
 
         // carico le immagini della catena evolutiva
-        let pkmnEvChainUrl = URLEVCHAIN + name;
-        loadEvChain(pkmnEvChainUrl);
+        let nameList, pkmnEvChainUrl;
+        if (name.includes("-")) {
+            nameList = name.split("-");
+            pkmnEvChainUrl = URLEVCHAIN + nameList[0];
+        } else {
+            pkmnEvChainUrl = URLEVCHAIN + name;
+        }
 
+        loadEvChain(pkmnEvChainUrl);
         // ottengo i dati del Pokémon
         request(name);
     }, [name]);
 
     // cerco per il dato fornito nella barra di ricerca
     const cercaPkmn = async ()=> {
+        setIsLoading(true);
         // prendo il contenuto della casella di ricerca e lo "purifico"
-        let inser = searchBar.current.value.trim().toLowerCase().replace(" ", "-");
+        let inser = searchBar.current.value.trim().toLowerCase().replaceAll(" ", "-");
         
         await fetch(APIURL + inser)
         .then((response)=> {
@@ -310,7 +334,7 @@ const PokemonDetail = () => {
             }
             return response;
         }).catch((error) => {
-            // Your error is here!
+            setIsLoading(false);
             console.log(error);
             alert("hai un errore!");
         });
@@ -324,164 +348,164 @@ const PokemonDetail = () => {
 
     // ritorno il componente
     return (
-        <div className="container-fluid bgColor p-3">
-            {isLoading ? <Loader /> : null}
-            <div className="row justify-content-center align-items-center flex-row-reverse">
-                {/* barra di ricerca */}
-                <div className="col-12 mb-5 d-flex justify-content-center">
-                    <form onKeyDown={handleKeyDown} id="search-pokemon-bar">
-                        <div className="search-bar text-center input-group">
-                            <input ref={searchBar} type="text" placeholder="Cerca Pokémon per nome o numero" className="form-control input-fields input-group-text-left fs-5" />
-                            <span className="input-group-text input-group-text-right" onClick={cercaPkmn}><i className="bi bi-search fs-4"></i></span>
+        <>
+            <Navbar />
+            <div className="container-fluid bgColor p-3">
+                {isLoading && <Loader />}
+                <div className="row justify-content-center align-items-center flex-row-reverse">
+                    {/* barra di ricerca */}
+                    <div className="col-12 mb-5 pb-5 d-flex justify-content-center">
+                        <form onKeyDown={handleKeyDown} id="search-pokemon-bar">
+                            <div className="search-bar text-center input-group">
+                                <input ref={searchBar} type="text" placeholder="Cerca Pokémon per nome o numero" className="form-control input-fields input-group-text-left fs-5" />
+                                <span className="input-group-text input-group-text-right" onClick={cercaPkmn}><i className="bi bi-search fs-4"></i></span>
+                            </div>
+                        </form>
+                    </div>
+                    {/* nome e numero del pkmn */}
+                    <div className="col-12 col-lg-7 mt-3 remove-top">
+                        <div id="pkmn-id">
+                            <span className="primaryColor" id="pkmn-name" ref={pkmnName}></span>
+                            <span className="thirdyColor" id="pkmn-number" ref={pkmnNumber}></span>
                         </div>
-                    </form>
-                </div>
-                {/* nome e numero del pkmn */}
-                <div className="col-12 col-lg-6 mt-3 remove-top">
-                    <div id="pkmn-id">
-                        <span className="primaryColor" id="pkmn-name" ref={pkmnName}></span>
-                        <span className="thirdyColor" id="pkmn-number" ref={pkmnNumber}></span>
+                    </div>
+                    <div className="col-12 col-lg-5">
+                        {/* immagine del pkmn */}
+                        <div className="pkmn-detail-img text-center" ref={pkmnImg} onClick={playCry}>
+                        </div>
+                        {/* icone dei tipi */}
+                        <div className="col-12 d-flex justify-content-around align-items-center" ref={pkmnTypes}>
+                        </div>
                     </div>
                 </div>
-                <div className="col-12 col-lg-6">
-                    {/* immagine del pkmn */}
-                    <div className="pkmn-detail-img text-center" ref={pkmnImg} onClick={playCry}>
+                <div className="row justify-content-center align-items-center flex-row-reverse">
+                    <div className="col-12 col-lg-6 alzati" id="second-content">
+                        <div className="row justify-content-center align-items-center flex-lg-column-reverse">
+                            <div className="col-12 vertical-line">
+                                <div className="row justify-content-center align-items-center flex-row-reverse g-3">
+                                    {/* debolezze */}
+                                    <div className="col-12">
+                                        <hr className="d-lg-none mt-5" />
+                                        <p className="mt-5 text-center info-title">Debolezze</p>
+                                    </div>
+                                    <div className="col-12 d-flex justify-content-around" ref={pkmnWeak4}>
+                                        {/* x4 */}
+                                    </div>
+                                    <div className="col-12 d-flex justify-content-around" ref={pkmnWeak2}>
+                                        {/* x2 */}
+                                    </div>
+                                    {/* effetto normale */}
+                                    {/* <div className="col-12">
+                                        <hr className="d-lg-none mt-5" />
+                                        <p className="mt-5 text-center info-title">Effetto normale</p>
+                                    </div>
+                                    <div className="col-12 d-flex justify-content-around" ref={pkmnEff1}>
+                                        <div className="d-flex align-items-center">
+                                            x1
+                                        </div>
+                                    </div> */}
+                                    {/* resistenze */}
+                                    <div className="col-12">
+                                        <hr className="d-lg-none mt-5" />
+                                        <p className="mt-5 text-center info-title">Resistenze</p>
+                                    </div>
+                                    <div className="col-12 d-flex justify-content-around" ref={pkmnRes0}>
+                                        {/* x0 */}
+                                    </div>
+                                    <div className="col-12 d-flex justify-content-around" ref={pkmnRes025}>
+                                        {/* x0.25 */}
+                                    </div>
+                                    <div className="col-12 d-flex justify-content-around" ref={pkmnRes05}>
+                                        {/* x0.5 */}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-12">
+                                <div className="row justify-content-center align-items-center">
+                                    {/* linea evolutiva */}
+                                    <div className="col-12">
+                                        <hr className="d-lg-none mt-5" />
+                                        <p className="mt-5 text-center info-title">Linea evolutiva</p>
+                                        <div className="d-flex justify-content-around">
+                                            {/* creo la catena evolutiva */}
+                                            {Object.keys(evChain).sort((a, b)=> {
+                                                // tratto le chiavi del dizionario (stringhe)
+
+                                                // se il pokémon è un baby lo metto per primo
+                                                if (evChain[a].isBaby) {
+                                                    return -1;
+                                                } else if (evChain[b].isBaby) {
+                                                    return 1;
+                                                }
+
+                                                // se il pokémon è mega o giga lo metto al fondo
+                                                if (evChain[a].isMega || evChain[a].isGiga || evChain[b].isMega || evChain[b].isGiga) {
+                                                    return 1;
+                                                }
+
+                                                // se non è nessuno di quelli uso l'ordine crescente
+                                                return parseInt(a) - parseInt(b);
+                                            }).map((num)=> {
+                                                // ottengo il nome del Pokémon
+                                                let currentName = evChain[num].name.trim();
+                                                currentName = currentName[0].toUpperCase() + currentName.slice(1);
+                                                // definisco il percorso per la pagina da aprire
+                                                let path = "/Pokemon/" + currentName;
+                                                return (
+                                                    <div className="evolution-chain-img" key={currentName}>
+                                                        <Link to={path}>
+                                                            <img src={IMAGEURL + num + IMAGEEXT} alt={currentName} title={currentName} />
+                                                        </Link>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    {/* icone dei tipi */}
-                    <div className="col-12 d-flex justify-content-around align-items-center" ref={pkmnTypes}>
+                    <div className="col-12 col-lg-6 text-center mt-5">
+                        <div className="row justify-content-center align-items-center">
+                            {/* infos */}
+                            <div className="col-12">
+                                <div className="mt-5 text-center">
+                                    <hr className="d-lg-none" />
+                                    <div className="row justify-content-center align-items-center mt-5">
+                                        <div className="col-6 info-content">
+                                            <span className="info-title">Altezza:</span> <span ref={pkmnHeight} >0,7</span>m
+                                        </div>
+                                        <div className="col-6 info-content">
+                                            <span className="info-title">Peso:</span> <span ref={pkmnWeight} >15</span>kg
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr className="d-lg-none mt-5" />
+                                <div className="d-flex justify-content-around">
+                                    <div className="mt-5 col-4">
+                                        <span className="info-title">Abilità:</span>
+                                        <ul ref={pkmnAbilities} className="text-start">
+                                        </ul>
+                                    </div>
+                                    <div className="mt-5 col-4">
+                                        <span className="info-title">Strumenti:</span>
+                                        <ul ref={pkmnItems} className="text-start">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-12 mt-5">
+                                <hr className="d-lg-none mt-5" />
+                                <span className="mt-4 info-title">Statistiche base</span>
+                                <div className="mt-4" ref={pkmnStats} id="chart-container">
+                                    {!isLoading && <StatsChart pkmnname={name} barColor="--primary-pkmn-color" />}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div className="row justify-content-center align-items-center flex-row-reverse">
-                <div className="col-12 col-lg-6 alzati" id="second-content">
-                    <div className="row justify-content-center align-items-center flex-lg-column-reverse">
-                        <div className="col-12 vertical-line">
-                            <div className="row justify-content-center align-items-center flex-row-reverse g-3">
-                                {/* debolezze */}
-                                <div className="col-12">
-                                    <hr className="d-lg-none mt-5" />
-                                    <p className="mt-5 text-center info-title">Debolezze</p>
-                                </div>
-                                <div className="col-12 d-flex justify-content-around" ref={pkmnWeak4}>
-                                    {/* x4 */}
-                                </div>
-                                <div className="col-12 d-flex justify-content-around" ref={pkmnWeak2}>
-                                    {/* x2 */}
-                                </div>
-                                {/* effetto normale */}
-                                {/* <div className="col-12">
-                                    <hr className="d-lg-none mt-5" />
-                                    <p className="mt-5 text-center info-title">Effetto normale</p>
-                                </div>
-                                <div className="col-12 d-flex justify-content-around" ref={pkmnEff1}>
-                                    <div className="d-flex align-items-center">
-                                        x1
-                                    </div>
-                                </div> */}
-                                {/* resistenze */}
-                                <div className="col-12">
-                                    <hr className="d-lg-none mt-5" />
-                                    <p className="mt-5 text-center info-title">Resistenze</p>
-                                </div>
-                                <div className="col-12 d-flex justify-content-around" ref={pkmnRes0}>
-                                    {/* x0 */}
-                                </div>
-                                <div className="col-12 d-flex justify-content-around" ref={pkmnRes025}>
-                                    {/* x0.25 */}
-                                </div>
-                                <div className="col-12 d-flex justify-content-around" ref={pkmnRes05}>
-                                    {/* x0.5 */}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-12">
-                            <div className="row justify-content-center align-items-center">
-                                {/* linea evolutiva */}
-                                <div className="col-12">
-                                    <hr className="d-lg-none mt-5" />
-                                    <p className="mt-5 text-center info-title">Linea evolutiva</p>
-                                    <div className="d-flex justify-content-around">
-                                        {/* creo la catena evolutiva */}
-                                        {Object.keys(evChain).sort((a, b)=> {
-                                            console.log("presi: ", a, b)
-                                            console.log(Object.keys(evChain))
-                                            // tratto le chiavi del dizionario (stringhe)
-
-                                            // se il pokémon è un baby lo metto per primo
-                                            if (evChain[a].isBaby) {
-                                                return -1;
-                                            } else if (evChain[b].isBaby) {
-                                                return 1;
-                                            }
-
-                                            // se il pokémon è mega o giga lo metto al fondo
-                                            if (evChain[a].isMega || evChain[a].isGiga || evChain[b].isMega || evChain[b].isGiga) {
-                                                console.log("GIGA O MEGA")
-                                                return 1;
-                                            }
-
-                                            // se non è nessuno di quelli uso l'ordine crescente
-                                            return parseInt(a) - parseInt(b);
-                                        }).map((num)=> {
-                                            // ottengo il nome del Pokémon
-                                            let currentName = evChain[num].name.trim();
-                                            currentName = currentName[0].toUpperCase() + currentName.slice(1);
-                                            // definisco il percorso per la pagina da aprire
-                                            let path = "/Pokemon/" + currentName;
-                                            return (
-                                                <div className="evolution-chain-img">
-                                                    <Link to={path} key={currentName}>
-                                                        <img src={IMAGEURL + num + IMAGEEXT} alt={currentName} title={currentName} />
-                                                    </Link>
-                                                </div>
-                                            )
-                                        })}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-12 col-lg-6 text-center mt-5">
-                    <div className="row justify-content-center align-items-center">
-                        {/* infos */}
-                        <div className="col-12">
-                            <div className="mt-5 text-center">
-                                <hr className="d-lg-none" />
-                                <div className="row justify-content-center align-items-center mt-5">
-                                    <div className="col-6 info-content">
-                                        <span className="info-title">Altezza:</span> <span ref={pkmnHeight} >0,7</span>m
-                                    </div>
-                                    <div className="col-6 info-content">
-                                        <span className="info-title">Peso:</span> <span ref={pkmnWeight} >15</span>kg
-                                    </div>
-                                </div>
-                            </div>
-                            <hr className="d-lg-none mt-5" />
-                            <div className="d-flex justify-content-around">
-                                <div className="mt-5 col-4">
-                                    <span className="info-title">Abilità:</span>
-                                    <ul ref={pkmnAbilities} className="text-start">
-                                    </ul>
-                                </div>
-                                <div className="mt-5 col-4">
-                                    <span className="info-title">Strumenti:</span>
-                                    <ul ref={pkmnItems} className="text-start">
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-12 mt-5">
-                            <hr className="d-lg-none mt-5" />
-                            <span className="mt-4 info-title">Statistiche base</span>
-                            <div className="mt-4" ref={pkmnStats} id="chart-container">
-                                {(!isLoading) && <StatsChart pkmnname={name} primaryColor="var(--primary-pkmn-color)" />}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </>
     )
 }
 

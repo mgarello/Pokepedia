@@ -4,7 +4,7 @@ import BerryElement from "../components/BerryElement/BerryElement";
 import BackToTopButton from "../components/BackToTopButton/BackToTopButton";
 import ShowMoreButton from "../components/ShowMoreButton/ShowMoreButton";
 
-const ItemsList = () => {
+const BerriesList = () => {
     // valori di offset e limite per la chiamata all'API - uso stati così si aggiorna il componente
     const limite = 33;
     const [offset, setOffset] = useState(0);
@@ -47,4 +47,4 @@ const ItemsList = () => {
     )
 }
 
-export default ItemsList
+export default BerriesList

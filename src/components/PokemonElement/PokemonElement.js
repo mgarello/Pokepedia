@@ -23,30 +23,6 @@ const PokemonElement = (props) => {
         fetch(URL)
             .then(dati => dati.json())
             .then((ris) => {
-                // ! non uso il codice qua sotto (che funziona) perché sforo le dimensioni della localStorage
-                /*
-                // estrapolo il contenuto della localStorage
-                let ls = localStorage.getItem("PokemonList");
-                // controllo che non sia null
-                if (ls != null) {
-                    // converto la stringa in ls in json
-                    ls = JSON.parse(ls);
-                    console.log(ls)
-                    // accodo il JSON appena scaricato nella localStorage
-                    ls.push(ris);
-                    // converto l'array in stringa
-                    ls = JSON.stringify(ls);
-                    // carico la stringa ottenuta nella localStorage
-                    localStorage.setItem("PokemonList", ls)
-                } else {
-                    // inserisco quanto ho scaricato dentro un array
-                    let array = new Array(ris);
-                    // carico la stringa ottenuta in localStorage
-                    localStorage.setItem("PokemonList", JSON.stringify(array))
-                }
-                */
-
-                // console.log("faccio fetch")
                 ris.types.forEach((e) => {
                     types.push(e.type.name)
                 });

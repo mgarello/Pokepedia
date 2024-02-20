@@ -15,8 +15,8 @@ a {
 }
 
 .pkmn-img {
-    height: calc(10vh + 15vw);
-    width: calc(10vh + 15vw);
+    height: calc(10vh + 10vw);
+    width: calc(10vh + 10vw);
 }
 
 .icon {

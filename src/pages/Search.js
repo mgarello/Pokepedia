@@ -39,8 +39,8 @@ const Search = () => {
                 setIsLoading(false);
                 console.log(error);
                 Swal.fire({
-                    icon: "warning",
-                    title: "Attenzione!",
+                    icon: "error",
+                    title: "Errore!",
                     text: "Impossibile caricare le informazioni del Pokémon cercato, controllare la correttezza del nome o del numero inserito e riprovare"
                 });
             });
@@ -52,6 +52,8 @@ const Search = () => {
             cercaPkmn();
         }
     }
+
+    document.title = "Home - Poképedia";
 
     return (
         <>

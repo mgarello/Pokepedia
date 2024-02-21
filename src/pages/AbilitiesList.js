@@ -29,7 +29,9 @@ const AbilitiesList = () => {
     const clickHandler=()=> {
         // aumento l'offset
         setOffset(offset + limite);
-    }    
+    }
+
+    document.title = "Elenco abilità - Poképedia";
 
     return (
         <>

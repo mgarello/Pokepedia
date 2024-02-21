@@ -29,7 +29,9 @@ const PokemonList = () => {
     const clickHandler=()=> {
         // aumento l'offset
         setOffset(offset + limite);
-    }    
+    }
+
+    document.title = "Elenco Pokémon - Poképedia";
 
     return (
         <>

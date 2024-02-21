@@ -30,7 +30,9 @@ const MovesList = () => {
     const clickHandler=()=> {
         // aumento l'offset
         setOffset(offset + limite);
-    }    
+    }
+
+    document.title = "Elenco mosse - Poképedia";
 
     return (
         <>

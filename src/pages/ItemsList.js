@@ -29,7 +29,9 @@ const ItemsList = () => {
     const clickHandler=()=> {
         // aumento l'offset
         setOffset(offset + limite);
-    }    
+    }
+
+    document.title = "Elenco strumenti - Poképedia";
 
     return (
         <>

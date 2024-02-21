@@ -31,6 +31,8 @@ const BerriesList = () => {
         setOffset(offset + limite);
     }
 
+    document.title = "Elenco bacche - Poképedia";
+
     return (
         <>
             <Navbar />

@@ -26,18 +26,29 @@ html, body {
     bottom: calc(2rem + 1vh);
 }
 
+@media (max-width: 775px) {
+    #pkmn-number {
+        position: absolute;
+        z-index: -1;
+        left: 20vw;
+        bottom: 2vh;
+    }
+}
+
 #pkmn-name {
     font-size: calc(5vh + 5vw);
 }
 
 .pkmn-detail-img {
-    width: calc(45vh + 10vw);
-    height: calc(45vh + 10vw);
-    margin: 0px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .pkmn-detail-img img {
-    width: 90%;
+    width: calc(45vh + 10vw);
+    height: calc(45vh + 10vw);
+    margin: 0 auto;
     transition: 200ms all;
 }
 

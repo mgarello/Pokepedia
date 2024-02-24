@@ -44,6 +44,7 @@ const PokemonDetail = () => {
 
     const [evChain, setEvChain] = useState({});
 
+    // per spostarmi tra le pagine
     const navigate = useNavigate();
 
     
@@ -55,6 +56,54 @@ const PokemonDetail = () => {
         let pkmncry = new Audio(json.cries.latest);
         pkmncry.play();
     }
+
+    // detect user horizontal swipe
+    const [touchStartX, setTouchStartX] = useState(null);
+    const [touchEndX, setTouchEndX] = useState(null);
+    const [touchStartY, setTouchStartY] = useState(null);
+    const [touchEndY, setTouchEndY] = useState(null);
+
+    // the required distance between touchStart and touchEnd to be detected as a swipe
+    const minSwipeDistance = 50;
+
+    const onTouchStart = (e) => {
+        // otherwise the swipe is fired even with usual touch events
+        setTouchEndX(null);
+        setTouchEndY(null);
+        // ottengo il punto di inizio dello swipe
+        setTouchStartX(e.targetTouches[0].clientX);
+        setTouchStartY(e.targetTouches[0].clientY);
+    };
+
+    const onTouchMove = (e) => {
+        // ottengo il punto di fine dello swipe
+        setTouchEndX(e.targetTouches[0].clientX);
+        setTouchEndY(e.targetTouches[0].clientY);
+    }
+
+    const onTouchEnd = () => {
+        // calcolo le distanze di swipe
+        const distanceX = touchStartX - touchEndX;
+        const distanceY = touchStartY - touchEndY;
+        const isLeftSwipe = distanceX > minSwipeDistance;
+        const isRightSwipe = distanceX < -minSwipeDistance;
+
+        // ottengo il numero del Pokémon corrente (tolgo # iniziale)
+        let currNum = parseInt(pkmnNumber.current.innerHTML.slice(1));
+
+        if (isRightSwipe && touchEndX !== null && Math.abs(distanceX) > distanceY) {
+            // swipe a destra
+            if (currNum - 1 > 0) {
+                let prevNum = currNum - 1;
+                navigate("/Pokemon/" + prevNum);
+            }
+        }
+        if (isLeftSwipe && touchEndX !== null && distanceX > distanceY) {
+            // swipe a sinistra
+            let succNum = currNum+1;
+            navigate("/Pokemon/" + succNum);
+        }
+    };
 
     useEffect(() => {
 
@@ -106,7 +155,16 @@ const PokemonDetail = () => {
             // scarico
             const response = await fetch(APIURL + name);
             if (response.status === 404) {
-                navigate("/Pokemon");
+                Swal.fire({
+                    icon: "error",
+                    title: "Errore",
+                    text: "Il Pokémon selezionato non esiste.",
+                    confirmButtonText: "Capito"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate("/Pokemon");
+                    }
+                });
             }
             // converto
             const json = await response.json();
@@ -318,31 +376,39 @@ const PokemonDetail = () => {
 
     // cerco per il dato fornito nella barra di ricerca
     const cercaPkmn = async ()=> {
-        setIsLoading(true);
         // prendo il contenuto della casella di ricerca e lo "purifico"
         let inser = searchBar.current.value.trim().toLowerCase().replaceAll(" ", "-");
         
-        await fetch(APIURL + inser)
-        .then((response)=> {
-            if (response.status >= 400 && response.status < 600) {
-                throw new Error("Non è stato trovato alcun Pokémon con i criteri inseriti.");
-            } else {
-                inser = inser[0].toUpperCase() + inser.slice(1);
-                // l'API mi restituisce qualcosa --> rimando alla pagina corrispondente
-                navigate("/Pokemon/" + inser);
-                // pulisco il contenuto della barra
-                searchBar.current.value = "";
-            }
-            return response;
-        }).catch((error) => {
-            setIsLoading(false);
-            console.log(error);
-            Swal.fire({
-                icon: "warning",
-                title: "Attenzione!",
-                text: "Impossibile caricare le informazioni del Pokémon cercato, controllare la correttezza del nome o del numero inserito e riprovare"
+        if (inser !== "") {
+            setIsLoading(true);
+            await fetch(APIURL + inser)
+            .then((response)=> {
+                if (response.status >= 400 && response.status < 600) {
+                    throw new Error("Non è stato trovato alcun Pokémon con i criteri inseriti.");
+                } else {
+                    inser = inser[0].toUpperCase() + inser.slice(1);
+                    // l'API mi restituisce qualcosa --> rimando alla pagina corrispondente
+                    navigate("/Pokemon/" + inser);
+                    // pulisco il contenuto della barra
+                    searchBar.current.value = "";
+                }
+                return response;
+            }).catch((error) => {
+                setIsLoading(false);
+                console.log(error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Errore!",
+                    text: "Impossibile caricare le informazioni del Pokémon cercato, controllare la correttezza del nome o del numero inserito e riprovare"
+                });
             });
-        });
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Errore!",
+                text: "Impossibile eseguire la ricerca se non è stato inserito alcun valore."
+            });
+        }
     }
 
     const handleKeyDown = (event) => {
@@ -355,7 +421,7 @@ const PokemonDetail = () => {
     return (
         <>
             <Navbar />
-            <div className="container-fluid bgColor p-3">
+            <div className="container-fluid bgColor p-3" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
                 {isLoading && <Loader />}
                 <div className="row justify-content-center align-items-center flex-row-reverse">
                     {/* barra di ricerca */}
@@ -376,7 +442,7 @@ const PokemonDetail = () => {
                     </div>
                     <div className="col-12 col-lg-5">
                         {/* immagine del pkmn */}
-                        <div className="pkmn-detail-img text-center" ref={pkmnImg} onClick={playCry}>
+                        <div className="pkmn-detail-img" ref={pkmnImg} onClick={playCry}>
                         </div>
                         {/* icone dei tipi */}
                         <div className="col-12 d-flex justify-content-around align-items-center" ref={pkmnTypes}>

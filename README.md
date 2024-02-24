@@ -2,6 +2,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Funzionalità
+
+- Ricerca di un Pokémon per nome o per numero nella homepage e nella visione dettagliata;
+- visualizzazione dell'elenco di Pokémon, abilità, mosse, strumenti e bacche in pagine dedicate.
+- possibilità di cambiare il Pokémon visualizzato tramite uno swipe a destra e a sinistra nella visione dettagliata del Pokémon (funzionante solo su mobile).
+
 ## Dipendenze aggiuntive
 
 ### React use-dynamic-refs
@@ -68,3 +74,6 @@ Per accedere alle variabili CSS all'interno del componente del grafico è stato 
 
 ### GIF del preloader
 La GIF utilizzata per il preloader è stata scaricata da [Tenor](https://tenor.com/en-GB/view/pokemon-gif-21691408).
+
+### Rilevamento swipe destra/sinistra
+Il codice per rilevare gli swipe verso destra e verso sinistra è stato adattato da quello fornito in [questa soluzione](https://stackoverflow.com/questions/70612769/how-do-i-recognize-swipe-events-in-react).

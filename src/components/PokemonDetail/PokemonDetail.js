@@ -9,6 +9,8 @@ import getMultipliers from "../../helpers/getMultipliers";
 import StatsChart from "../StatsChart/StatsChart";
 import Swal from "sweetalert2";
 
+let n;
+
 const PokemonDetail = () => {
     // loader
     const [isLoading, setIsLoading] = useState(true);
@@ -179,7 +181,8 @@ const PokemonDetail = () => {
             num = "#" + num;
             
             // creo lo sfondo
-            getColors(parseInt(num.slice(1)));
+            n = parseInt(num.slice(1));
+            getColors(n, IMAGEURL + n + IMAGEEXT);
 
             // tipi del Pokémon
             let types = [];
@@ -421,14 +424,15 @@ const PokemonDetail = () => {
     return (
         <>
             <Navbar />
-            <div className="container-fluid bgColor p-3" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+            {console.log(n)}
+            <div className={"container-fluid p-3 bgColor-" + n} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
                 {isLoading && <Loader />}
                 <div className="row justify-content-center align-items-center flex-row-reverse">
                     {/* barra di ricerca */}
                     <div className="col-12 mb-5 pb-5 d-flex justify-content-center">
                         <form onKeyDown={handleKeyDown} id="search-pokemon-bar">
                             <div className="search-bar text-center input-group">
-                                <input ref={searchBar} type="text" placeholder="Cerca Pokémon per nome o numero" className="form-control input-fields input-group-text-left fs-5" />
+                                <input ref={searchBar} type="search" placeholder="Cerca Pokémon per nome o numero" className="form-control input-fields input-group-text-left fs-5" />
                                 <span className="input-group-text input-group-text-right" onClick={cercaPkmn}><i className="bi bi-search fs-4"></i></span>
                             </div>
                         </form>
@@ -436,8 +440,8 @@ const PokemonDetail = () => {
                     {/* nome e numero del pkmn */}
                     <div className="col-12 col-lg-7 mt-3 remove-top">
                         <div id="pkmn-id">
-                            <span className="primaryColor" id="pkmn-name" ref={pkmnName}></span>
-                            <span className="thirdyColor" id="pkmn-number" ref={pkmnNumber}></span>
+                            <span className={"primaryColor-" + n} id="pkmn-name" ref={pkmnName}></span>
+                            <span className={"thirdyColor-" + n} id="pkmn-number" ref={pkmnNumber}></span>
                         </div>
                     </div>
                     <div className="col-12 col-lg-5">

@@ -77,3 +77,9 @@ La GIF utilizzata per il preloader è stata scaricata da [Tenor](https://tenor.c
 
 ### Rilevamento swipe destra/sinistra
 Il codice per rilevare gli swipe verso destra e verso sinistra è stato adattato da quello fornito in [questa soluzione](https://stackoverflow.com/questions/70612769/how-do-i-recognize-swipe-events-in-react).
+
+### Immagini di sfondo
+Le immagini di sfondo nelle schermate con gli elenchi sono state scaricate dai seguenti link:
+[Pokédex](https://pokemon-go.name/wp-content/uploads/2023/08/uvelichenie-vmestimosti-pokemon-storage-and-item-bag-storage-pokemon-go-1024x572.jpg)
+[Borsa](https://pokemongohub.net/wp-content/uploads/2023/08/EVr0cxyXgAEuXvo.webp)
+e modificate tramite il questo [tool online](https://www.remove.bg/):

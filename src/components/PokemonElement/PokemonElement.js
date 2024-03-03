@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./PokemonElement.css";
+import getColors from "../../helpers/getColors";
 
 const PokemonElement = (props) => {
     const wrapper = useRef();
@@ -55,16 +56,17 @@ const PokemonElement = (props) => {
         wrapper.current.innerHTML = ""; // pulisco il contenitore
         wrapper.current.appendChild(contenitore); // aggiungo il contenitore con i tipi
     }
+    getColors(num, imagePath);
 
     return (
         // ritorno il pokemon
-        <div className="col-12 col-lg-4 col-xl-3 list-element p-4 pkmn-container" key={num}>
+        <div className={"col-12 col-lg-4 col-xl-3 list-element p-4 pkmn-container bgColor-" + num} key={num}>
             <Link to={"/Pokemon/" + name}>
                 <div>
                     <div className="text-center">
-                        <b>{name}</b>
+                        <b className={"secondaryColor-" + num}>{name}</b>
                         <br />
-                        <i>#{num}</i>
+                        <i className={"secondaryColor-" + num}>#{num}</i>
                     </div>
                     <div className="text-center mt-3 mb-3">
                         <img src={imagePath} alt={name} className="pkmn-img" />

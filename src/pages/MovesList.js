@@ -3,9 +3,15 @@ import Navbar from "../components/Navbar/Navbar";
 import MoveElement from "../components/MoveElement/MoveElement";
 import BackToTopButton from "../components/BackToTopButton/BackToTopButton";
 import ShowMoreButton from "../components/ShowMoreButton/ShowMoreButton";
+import Loader from "../components/Loader/Loader";
+import "../css/style.css";
+import Wallpaper from "../images/pokemon.png";
 
 
 const MovesList = () => {
+    // loader
+    const [isLoading, setIsLoading] = useState(true);
+
     // valori di offset e limite per la chiamata all'API - uso stati così si aggiorna il componente
     const limite = 99;
     const [offset, setOffset] = useState(0);
@@ -22,6 +28,7 @@ const MovesList = () => {
                 if (elenco.next === null) {
                     setIsFull(true);
                 }
+                setIsLoading(false);
             });
         }
         scarica();
@@ -35,18 +42,19 @@ const MovesList = () => {
     document.title = "Elenco mosse - Poképedia";
 
     return (
-        <>
+        <div style={{backgroundImage: `url(${Wallpaper})`}} className="bg-image-centered">
             <Navbar />
+            {isLoading && <Loader />}
             <div className="container mt-3">
                 <div className="row justify-content-center align-moves-center g-2">
                     {moves.map(({name, url})=> {
                         return <MoveElement image={url} name={name} />
                     })}
                 </div>
-                {(!isFull) ? <ShowMoreButton text="Carica altre mosse" functionName={clickHandler} /> : console.log()}
+                {(!isFull) && <ShowMoreButton text="Carica altre mosse" functionName={clickHandler} />}
                 <BackToTopButton />
             </div>
-        </>
+        </div>
     )
 }
 

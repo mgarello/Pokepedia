@@ -68,7 +68,7 @@ const Search = () => {
                         <div className="text-center">
                             <form onKeyDown={handleKeyDown}>
                                 <div className="search-bar text-center input-group">
-                                    <input ref={searchBar} type="text" placeholder="Cerca Pokémon per nome o numero" className="form-control input-fields input-group-text-left fs-5" />
+                                    <input ref={searchBar} type="search" placeholder="Cerca Pokémon per nome o numero" className="form-control input-fields input-group-text-left fs-5" />
                                     <span className="input-group-text input-group-text-right" onClick={cercaPkmn}><i className="bi bi-search fs-4"></i></span>
                                 </div>
                             </form>

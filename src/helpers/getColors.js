@@ -1,7 +1,7 @@
 import React from "react";
 import ColorThief from "colorthief";
 
-const getColors = (num) => {
+const getColors = (num, imageUrl) => {
     const rgb = (r, g, b) => {
         return `rgb(${r}, ${g}, ${b})`
     }
@@ -28,12 +28,12 @@ const getColors = (num) => {
                                 --thirdy-pkmn-color: ${thirdyColor};
                             }
 
-                            .bgColor {
+                            .bgColor-${num} {
                                 background: linear-gradient( -45deg, ${bgColor}, ${bgColorEnd} );
                                      }
-                            .primaryColor { color: ${primaryColor}; }
-                            .secondaryColor { color: ${secondaryColor}; } 
-                            .thirdyColor { color: ${thirdyColor}; }
+                            .primaryColor-${num} { color: ${primaryColor}; }
+                            .secondaryColor-${num} { color: ${secondaryColor}; } 
+                            .thirdyColor-${num} { color: ${thirdyColor}; }
                             .borderColor { 
                                 text-shadow: -1px 0 ${bgColor}, 0 1px ${bgColor}, 1px 0 ${bgColor}, 0 -1px ${bgColor};
                             }
@@ -68,7 +68,7 @@ const getColors = (num) => {
         document.head.querySelectorAll('meta[name=theme-color]')[0].content = bgColor;
     }
     // percorso dell'immagine
-    image.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + num + ".png";
+    image.src = imageUrl;
     image.crossOrigin = 'Anonymous';
 }
 

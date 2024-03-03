@@ -84,3 +84,15 @@ nav {
 .show {
     height: 100vh;
 }
+
+nav {
+    position: sticky !important;
+    top: 0;
+    /* width: 100%; */
+    z-index: 1;
+    
+    transition-property: top;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
+}

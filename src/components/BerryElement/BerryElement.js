@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from "react";
 import useDynamicRefs from "use-dynamic-refs";
 import "./BerryElement.css";
+import getColors from "../../helpers/getColors";
 
 const BerryElement = (props) => {
     const [getRef, setRef] =  useDynamicRefs();
@@ -40,6 +41,7 @@ const BerryElement = (props) => {
             }
         });
     }
+    getColors(num, imageURL);
 
     useEffect(()=> {
         request();
@@ -47,16 +49,16 @@ const BerryElement = (props) => {
 
     return (
         // ritorno il pokemon
-        <div className="col-12 col-md-6 col-lg-4 col-xl-3 list-element p-4 pkmn-container" style={{minHeight: "calc(35vw - 30vh)"}} key={num}>
+        <div className={"col-12 col-md-6 col-lg-4 col-xl-3 list-element p-4 pkmn-container bgColor-" + num} style={{minHeight: "calc(35vw - 30vh)"}} key={num}>
             <div>
                 <div className="text-center">
-                    <b ref={setRef(num)}>{name}</b>
+                    <b ref={setRef(num)} className={"secondaryColor-" + num}>{name}</b>
                 </div>
                 <div className="text-center mt-3 mb-3">
                     <img src={imageURL} className="berry-img" />
                 </div>
             </div>
-            <div ref={containerDef}></div>
+            <div ref={containerDef} className={"secondaryColor-" + num}></div>
         </div>
     )
 }

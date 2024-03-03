@@ -1,17 +1,19 @@
 {
   "files": {
-    "main.css": "/Pokepedia/static/css/main.38dff623.css",
-    "main.js": "/Pokepedia/static/js/main.c6e71df1.js",
+    "main.css": "/Pokepedia/static/css/main.dee9c713.css",
+    "main.js": "/Pokepedia/static/js/main.d558b2a1.js",
     "static/js/592.dc895a92.chunk.js": "/Pokepedia/static/js/592.dc895a92.chunk.js",
+    "static/media/bag.png": "/Pokepedia/static/media/bag.ea57956fe4c6d258dff7.png",
+    "static/media/pokemon.png": "/Pokepedia/static/media/pokemon.752d1b55355d121ee0fa.png",
     "static/media/logo.png": "/Pokepedia/static/media/logo.3f969452f013947e1f2f.png",
     "static/media/Pokemon_Solid.ttf": "/Pokepedia/static/media/Pokemon_Solid.5d60be1f7ff5fcc21fc1.ttf",
     "index.html": "/Pokepedia/index.html",
-    "main.38dff623.css.map": "/Pokepedia/static/css/main.38dff623.css.map",
-    "main.c6e71df1.js.map": "/Pokepedia/static/js/main.c6e71df1.js.map",
+    "main.dee9c713.css.map": "/Pokepedia/static/css/main.dee9c713.css.map",
+    "main.d558b2a1.js.map": "/Pokepedia/static/js/main.d558b2a1.js.map",
     "592.dc895a92.chunk.js.map": "/Pokepedia/static/js/592.dc895a92.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.38dff623.css",
-    "static/js/main.c6e71df1.js"
+    "static/css/main.dee9c713.css",
+    "static/js/main.d558b2a1.js"
   ]
 }

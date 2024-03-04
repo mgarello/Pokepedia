@@ -1,6 +1,9 @@
 # Poképedia: la mia enciclopedia Pokémon personale!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app
+
+Per utilizzare questo progetto è necessario scaricare il contenuto del repository, accedere all'interno della directory e digitare il comando `npm install --legacy-peer-deps`.
+Al termine dell'installazione, per avviare il progetto, digitare il comando `npm start`.
 
 ## Funzionalità
 
@@ -82,4 +85,4 @@ Il codice per rilevare gli swipe verso destra e verso sinistra è stato adattato
 Le immagini di sfondo nelle schermate con gli elenchi sono state scaricate dai seguenti link:
 [Pokédex](https://pokemon-go.name/wp-content/uploads/2023/08/uvelichenie-vmestimosti-pokemon-storage-and-item-bag-storage-pokemon-go-1024x572.jpg)
 [Borsa](https://pokemongohub.net/wp-content/uploads/2023/08/EVr0cxyXgAEuXvo.webp)
-e modificate tramite il questo [tool online](https://www.remove.bg/):
+e modificate tramite questo [tool online](https://www.remove.bg/):
